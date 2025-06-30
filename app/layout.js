@@ -1,3 +1,5 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navigation from "./conponents/Navigation";
@@ -20,7 +22,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body
+      <body 
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       ><Navigation/>
         {children}
