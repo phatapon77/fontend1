@@ -4,6 +4,8 @@ import Link from 'next/link';
 
 export default function Navigation() {
   return (
+
+    
   <nav className="navbar navbar-expand-lg bg-body-tertiary">
   <div className="container-fluid">
      <a className="navbar-brand" href="#">
