@@ -25,7 +25,7 @@ data-bs-ride="carousel">
       width={1920} height={690} />
     </div>
     <div className="carousel-item">
-      <img src="/images/sliders/sliders-03.png" 
+      <img src="https://4kwallpapers.com/images/wallpapers/kawasaki-z900-5k-1920x1200-14777.jpg" 
       className="d-block w-100" alt="..." 
       width={1920} height={690} />
     </div>
