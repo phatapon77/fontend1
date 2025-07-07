@@ -1,5 +1,4 @@
 'use client';
-
 import { useEffect } from 'react';
 
 import Image from "next/image";
@@ -10,16 +9,25 @@ export default function Carousel() {
     import('bootstrap/dist/js/bootstrap.bundle.min.js');
   }, []);
   return (
-<div id="carouselExample" className="carousel slide carousel-fade" data-bs-ride="carousel">
+<div 
+id="carouselExample" 
+className="carousel slide carousel-fade" 
+data-bs-ride="carousel">
   <div className="carousel-inner">
     <div className="carousel-item active">
-      <Image src="https://t4.ftcdn.net/jpg/15/09/66/21/360_F_1509662144_OJD6sfcteeHj8N5A4s5gU779zo1FAHaz.jpg" className="d-block w-100" alt="..." width={1920} height={690} />
+      <img src="https://t4.ftcdn.net/jpg/15/09/66/21/360_F_1509662144_OJD6sfcteeHj8N5A4s5gU779zo1FAHaz.jpg" 
+      className="d-block w-100" 
+      alt="..."width={1920} height={690} />
     </div>
     <div className="carousel-item">
-      <Image src="https://t4.ftcdn.net/jpg/15/09/66/21/360_F_1509662144_OJD6sfcteeHj8N5A4s5gU779zo1FAHaz.jpg" className="d-block w-100" alt="..." width={1920} height={690} />
+      <img src="/images/sliders/sliders-02.png" 
+      className="d-block w-100" alt="..." 
+      width={1920} height={690} />
     </div>
     <div className="carousel-item">
-      <Image src="https://t4.ftcdn.net/jpg/15/09/66/21/360_F_1509662144_OJD6sfcteeHj8N5A4s5gU779zo1FAHaz.jpg" className="d-block w-100" alt="..." width={1920} height={690} />
+      <img src="/images/sliders/sliders-03.png" 
+      className="d-block w-100" alt="..." 
+      width={1920} height={690} />
     </div>
   </div>
   <button className="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
@@ -34,5 +42,3 @@ export default function Carousel() {
 
   );
 }
-
-  
