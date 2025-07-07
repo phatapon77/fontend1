@@ -20,7 +20,7 @@ data-bs-ride="carousel">
       alt="..."width={1920} height={690} />
     </div>
     <div className="carousel-item">
-      <img src="/images/sliders/sliders-02.png" 
+      <img src="https://images.wallpaperscraft.com/image/single/yamaha_mt09_yamaha_motorcycle_254634_1920x1080.jpg" 
       className="d-block w-100" alt="..." 
       width={1920} height={690} />
     </div>
