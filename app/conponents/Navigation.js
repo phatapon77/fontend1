@@ -8,7 +8,7 @@ export default function Navigation() {
   <div className="container-fluid">
      <a className="navbar-brand" href="#">
   <img src="/bootstrap-logo.svg" alt="Logo" width={30} height={24} className="d-inline-block align-text-top" />
-  Bootstrap
+  DAILY
 </a>
 
     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
