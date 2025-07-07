@@ -13,7 +13,7 @@ export default function Carousel() {
 <div id="carouselExample" className="carousel slide carousel-fade" data-bs-ride="carousel">
   <div className="carousel-inner">
     <div className="carousel-item active">
-      <Image src="/images/sliders/1.png" className="d-block w-100" alt="..." width={1920} height={690} />
+      <Image src="https://t4.ftcdn.net/jpg/15/09/66/21/360_F_1509662144_OJD6sfcteeHj8N5A4s5gU779zo1FAHaz.jpg" className="d-block w-100" alt="..." width={1920} height={690} />
     </div>
     <div className="carousel-item">
       <Image src="/images/sliders/2.png" className="d-block w-100" alt="..." width={1920} height={690} />
