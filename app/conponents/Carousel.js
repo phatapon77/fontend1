@@ -16,10 +16,10 @@ export default function Carousel() {
       <Image src="https://t4.ftcdn.net/jpg/15/09/66/21/360_F_1509662144_OJD6sfcteeHj8N5A4s5gU779zo1FAHaz.jpg" className="d-block w-100" alt="..." width={1920} height={690} />
     </div>
     <div className="carousel-item">
-      <Image src="/images/sliders/2.png" className="d-block w-100" alt="..." width={1920} height={690} />
+      <Image src="https://t4.ftcdn.net/jpg/15/09/66/21/360_F_1509662144_OJD6sfcteeHj8N5A4s5gU779zo1FAHaz.jpg" className="d-block w-100" alt="..." width={1920} height={690} />
     </div>
     <div className="carousel-item">
-      <Image src="/images/sliders/3.png" className="d-block w-100" alt="..." width={1920} height={690} />
+      <Image src="https://t4.ftcdn.net/jpg/15/09/66/21/360_F_1509662144_OJD6sfcteeHj8N5A4s5gU779zo1FAHaz.jpg" className="d-block w-100" alt="..." width={1920} height={690} />
     </div>
   </div>
   <button className="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
