@@ -15,7 +15,7 @@ className="carousel slide carousel-fade"
 data-bs-ride="carousel">
   <div className="carousel-inner">
     <div className="carousel-item active">
-      <img src="https://t4.ftcdn.net/jpg/15/09/66/21/360_F_1509662144_OJD6sfcteeHj8N5A4s5gU779zo1FAHaz.jpg" 
+      <img src="https://4kwallpapers.com/images/walls/thumbs_2t/8836.jpg" 
       className="d-block w-100" 
       alt="..."width={1920} height={690} />
     </div>
