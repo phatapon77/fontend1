@@ -28,8 +28,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={prompt.className}
-      ><Navigation/>
+      <body className={prompt.className}><Navigation/>
         {children}
       </body>
     </html>

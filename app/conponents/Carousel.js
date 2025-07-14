@@ -15,17 +15,17 @@ className="carousel slide carousel-fade"
 data-bs-ride="carousel">
   <div className="carousel-inner">
     <div className="carousel-item active">
-      <img src="https://4kwallpapers.com/images/walls/thumbs_2t/8836.jpg" 
+      <img src="https://cdn.oneesports.co.th/cdn-data/sites/3/2023/10/Valorant_Iso_Agent24-1024x576-1.jpg" 
       className="d-block w-100" 
       alt="..."width={1920} height={690} />
     </div>
     <div className="carousel-item">
-      <img src="https://images.wallpaperscraft.com/image/single/yamaha_mt09_yamaha_motorcycle_254634_1920x1080.jpg" 
+      <img src="https://www.esports.net/wp-content/uploads/2024/09/valorant-agents-release-order.webp" 
       className="d-block w-100" alt="..." 
       width={1920} height={690} />
     </div>
     <div className="carousel-item">
-      <img src="https://4kwallpapers.com/images/wallpapers/kawasaki-z900-5k-1920x1200-14777.jpg" 
+      <img src="https://imagenes.eltiempo.com/files/image_1200_600/uploads/2024/06/07/66639c764f7f0.jpeg" 
       className="d-block w-100" alt="..." 
       width={1920} height={690} />
     </div>
