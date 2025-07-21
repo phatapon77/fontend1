@@ -43,12 +43,12 @@ export default function Navigation() {
         <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
         <button className="btn btn-outline-success" type="submit">Search</button>
       </form>
-      <a href="/Login" class="page" data-testid="Login">
-  <div class="flex items-center justify-center">เข้าสู่ระบบ</div>
+      <a href="/login" className="btn relative btn-primary" data-testid="login">
+  <div className="flex items-center justify-center">เข้าสู่ระบบ</div>
 </a>
 
-<a href="register" class="page" data-testid="register">
-  <div class="flex items-center justify-center">สมัครสมาชิก</div>
+<a href="/register" className="btn relative btn-primary" data-testid="register">
+  <div className="flex items-center justify-center">สมัครสมาชิก</div>
 </a>
     </div>
   </div>
