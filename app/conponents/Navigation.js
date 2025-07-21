@@ -33,7 +33,7 @@ export default function Navigation() {
             <li><a className="dropdown-item" href="/con">แจ้งปัญหา</a></li>
             <li><a className="dropdown-item" href="#">Another action</a></li>
             <li><hr className="dropdown-divider" /></li>
-            <li><a className="dropdown-item" href="#">Something else here</a></li>
+            <li><a className="dropdown-item" href="#">Something</a></li>
           </ul>
         </li>
         <li className="nav-item">
