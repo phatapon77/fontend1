@@ -113,8 +113,6 @@ export default function LoginPage({ backgroundColor = '#181818ff' }) {
             cursor: 'pointer',
             transition: 'background-color 0.3s ease',
           }}
-          onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#155ab6')}
-          onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#1a73e8')}
         >
           Login
         </button>
