@@ -29,7 +29,7 @@ export default function Navigation() {
             เกี่ยวกับเรา
           </a>
           <ul className="dropdown-menu">
-            <li><a className="dropdown-item" href="/contact">แจ้งปัญหา</a></li>
+            <li><a className="dropdown-item" href="/con">แจ้งปัญหา</a></li>
             <li><a className="dropdown-item" href="#">Another action</a></li>
             <li><hr className="dropdown-divider" /></li>
             <li><a className="dropdown-item" href="#">Something else here</a></li>
@@ -43,6 +43,7 @@ export default function Navigation() {
         <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
         <button className="btn btn-outline-success" type="submit">Search</button>
       </form>
+      
     </div>
   </div>
 </nav>
