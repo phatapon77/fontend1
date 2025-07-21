@@ -1,5 +1,6 @@
 // app/components/Navigation.js
 'use client';
+import Link from 'next/link';
 
 
 export default function Navigation() {
@@ -44,13 +45,13 @@ export default function Navigation() {
         <button className="btn btn-outline-success" type="submit">Search</button>
       </form>
 
-      <a href="/login" className="btn relative btn-primary" data-testid="login">
+      <Link href="/login" className="btn relative btn-primary" data-testid="login">
   <div className="flex items-center justify-center">เข้าสู่ระบบ</div>
-</a>
+</Link>
 
-<a href="/register" className="btn relative btn-primary" data-testid="register">
+<Link href="/register" className="btn relative btn-primary" data-testid="register">
   <div className="flex items-center justify-center">สมัครสมาชิก</div>
-</a>
+</Link>
 
     </div>
   </div>

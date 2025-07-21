@@ -1,3 +1,4 @@
+'use client';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { Geist, Geist_Mono } from "next/font/google";
@@ -20,17 +21,12 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata = {
-  title: 'เว็บไซต์ของคุณ',
-  description: 'เว็บไซต์ที่ใช้ฟอนต์ Prompt',
-};
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={prompt.className}
-      >
-        <Navigation/>
+      ><Navigation />
         {children}
       </body>
     </html>
