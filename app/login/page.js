@@ -12,7 +12,7 @@ export default function LoginPage() {
     console.log('Password:', password);
 
     if (username === 'admin' && password === '1234') {
-      alert('Login success!');
+      alert('login success!');
     } else {
       alert('Invalid username or password');
     }
