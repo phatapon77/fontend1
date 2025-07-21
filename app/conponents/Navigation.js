@@ -43,14 +43,9 @@ export default function Navigation() {
         <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
         <button className="btn btn-outline-success" type="submit">Search</button>
       </form>
-      <div style={{display: 'flex', gap: 5}}>
-  <button style={{backgroundColor: '#007bff', color: 'white', padding: '10px 20px', border: 'none', borderRadius: 5, cursor: 'pointer'}}>
-    <Link style={{color: 'white'}}classname="nav-link" href="/Login">เข้าสู่ระบบ</Link>
-  </button>
-  <button style={{backgroundColor: '#007bff', padding: '10px 20px', border: 'none', borderRadius: 5, cursor: 'pointer'}}>
-    <Link style={{color: 'white'}}classname="nav-link" href="" >สมัครสมาชิก</Link>
-  </button>
-</div>
+      <a href="Login" class="btn relative btn-primary" data-testid="Login">
+  <div class="flex items-center justify-center">Log in</div>
+</a>
     </div>
   </div>
 </nav>
