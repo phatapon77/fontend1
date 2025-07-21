@@ -21,7 +21,7 @@ export default function LoginPage() {
   return (
     <div className="login-background">
       <div className="login-box">
-        <h2 className="login-title">Login</h2>
+        <h2 className="login-title">login</h2>
         <div className="input-group">
           <input
             type="text"
@@ -39,7 +39,7 @@ export default function LoginPage() {
           />
         </div>
         <button className="login-btn" onClick={handleLogin}>
-          Login
+          login
         </button>
         <div className="signup-link">
           Don't have an account? <a href="/register">Sign up</a>

@@ -45,11 +45,11 @@ export default function Navigation() {
         <button className="btn btn-outline-success" type="submit">Search</button>
       </form>
 
-      <Link href="/login" className="btn relative btn-primary" data-testid="login">
+      <Link href="#" className="btn relative btn-primary" data-testid="login">
   <div className="flex items-center justify-center">เข้าสู่ระบบ</div>
 </Link>
 
-<Link href="/register" className="btn relative btn-primary" data-testid="register">
+<Link href="#" className="btn relative btn-primary" data-testid="register">
   <div className="flex items-center justify-center">สมัครสมาชิก</div>
 </Link>
 
