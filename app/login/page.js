@@ -17,7 +17,8 @@ export default function LoginPage({ backgroundColor = '#181818ff' }) {
           hsl(${hue}, 100%, 50%), 
           hsl(${(hue + 120) % 360}, 100%, 50%), 
           hsl(${(hue + 240) % 360}, 100%, 50%)
-        ) 1`;
+        )`;
+        borderRef.current.style.borderImageSlice = 1;
       }
     }, 40);
 
