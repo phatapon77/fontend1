@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 
-export default function LoginPage({ backgroundColor = '#181818ff' }) {
+export default function Login ({ backgroundColor = '#181818ff' }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const borderRef = useRef(null);
