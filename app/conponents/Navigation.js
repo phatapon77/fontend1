@@ -47,7 +47,7 @@ export default function Navigation() {
   <div class="flex items-center justify-center">เข้าสู่ระบบ</div>
 </a>
 
-<a href="Login" class="btn relative btn-primary" data-testid="Login">
+<a href="register" class="btn relative btn-primary" data-testid="register">
   <div class="flex items-center justify-center">สมัครสมาชิก</div>
 </a>
     </div>

@@ -1,0 +1,97 @@
+/* register.css */
+
+.register-background {
+  background: #000000; /* ✅ พื้นหลังเปลี่ยนสีตรงนี้ */
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.register-box {
+  position: relative;
+  max-width: 400px;
+  width: 100%;
+  padding: 30px;
+  background-color: #fff;
+  border-radius: 16px;
+  z-index: 1;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.register-box::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, red, orange, yellow, green, cyan, blue, violet, red);
+  background-size: 400%;
+  border-radius: 18px;
+  z-index: -1;
+  animation: rgbBorder 8s linear infinite;
+}
+
+@keyframes rgbBorder {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.register-title {
+  text-align: center;
+  margin-bottom: 24px;
+  color: #1a73e8; /* ✅ ธีมสีน้ำเงิน */
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.input-group {
+  margin-bottom: 16px;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+  color: #333;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid #1a73e8;
+  border-radius: 8px;
+  outline: none;
+  font-size: 14px;
+}
+
+.error {
+  color: red;
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.success {
+  color: green;
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 12px;
+  background-color: #1a73e8;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.submit-btn:hover {
+  background-color: #1665c1;
+}
