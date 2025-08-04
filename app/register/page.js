@@ -1,12 +1,14 @@
 'use client';
-
 import React, { useState } from 'react';
-import './register.css'; // 👈 Import CSS สำหรับตกแต่ง
+import Swal from 'sweetalert2';
+import './register.css';
 
-export default function RegisterPage() {
+export default function Register() {
   const [form, setForm] = useState({
-    name: '',
-    email: '',
+    firstname: '',
+    fullname: '',
+    lastname: '',
+    username: '',
     password: '',
     confirmPassword: '',
   });
@@ -15,29 +17,57 @@ export default function RegisterPage() {
   const [success, setSuccess] = useState('');
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-    setError('');
-    setSuccess('');
+    const { name, value } = e.target;
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (form.password !== form.confirmPassword) {
-      setError('Passwords do not match.');
+      setError('Passwords do not match');
       return;
     }
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      setSuccess('Registration successful!');
-      setForm({
-        name: '',
-        email: '',
-        password: '',
-        confirmPassword: '',
+      const res = await fetch('http://itdev.cmtc.ac.th:3000/api/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          firstname: form.firstname,
+          fullname: form.fullname,
+          lastname: form.lastname,
+          username: form.username,
+          password: form.password,
+        }),
       });
+
+      const result = await res.json();
+      console.log(result);
+
+      if (res.ok) {
+        setSuccess('Registration successful!');
+        setForm({
+          firstname: '',
+          fullname: '',
+          lastname: '',
+          username: '',
+          password: '',
+          confirmPassword: '',
+        });
+        setError('');
+        Swal.fire('Success', 'You have been registered!', 'success');
+      } else {
+        setError(result.message || 'Registration failed');
+      }
     } catch (err) {
-      setError('Registration failed. Please try again.');
+      console.error(err);
+      setError('An error occurred. Please try again.');
     }
   };
 
@@ -47,20 +77,64 @@ export default function RegisterPage() {
         <h2 className="register-title">Membership Application</h2>
         <form onSubmit={handleSubmit}>
           <div className="input-group">
-            <label>Name:</label>
-            <input type="text" name="name" value={form.name} onChange={handleChange} required />
+            <label>First Name:</label>
+            <input
+              type="text"
+              name="firstname"
+              value={form.firstname}
+              onChange={handleChange}
+              required
+            />
           </div>
           <div className="input-group">
-            <label>Email:</label>
-            <input type="email" name="email" value={form.email} onChange={handleChange} required />
+            <label>Full Name:</label>
+            <input
+              type="text"
+              name="fullname"
+              value={form.fullname}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="input-group">
+            <label>Last Name:</label>
+            <input
+              type="text"
+              name="lastname"
+              value={form.lastname}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="input-group">
+            <label>Username:</label>
+            <input
+              type="text"
+              name="username"
+              value={form.username}
+              onChange={handleChange}
+              required
+            />
           </div>
           <div className="input-group">
             <label>Password:</label>
-            <input type="password" name="password" value={form.password} onChange={handleChange} required />
+            <input
+              type="password"
+              name="password"
+              value={form.password}
+              onChange={handleChange}
+              required
+            />
           </div>
           <div className="input-group">
             <label>Confirm Password:</label>
-            <input type="password" name="confirmPassword" value={form.confirmPassword} onChange={handleChange} required />
+            <input
+              type="password"
+              name="confirmPassword"
+              value={form.confirmPassword}
+              onChange={handleChange}
+              required
+            />
           </div>
           {error && <div className="error">{error}</div>}
           {success && <div className="success">{success}</div>}

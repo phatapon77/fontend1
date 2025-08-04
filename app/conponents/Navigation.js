@@ -45,9 +45,9 @@ export default function Navigation() {
         <button className="btn btn-outline-success" type="submit">Search</button>
       </form>
    
-  <dr><Link href="/login" className="btn relative btn-primary flex items-center justify-center px-4 py-2 rounded text-white bg-blue-600 hover:bg-blue-700">Login</Link></dr>
+  <Link href="/login" className="btn relative btn-primary flex items-center justify-center px-4 py-2 rounded text-white bg-blue-600 hover:bg-blue-700">Login</Link>
 
-  <dr><Link href="/register" className="btn relative btn-primary flex items-center justify-center px-4 py-2 rounded text-white bg-blue-600 hover:bg-blue-700">สมัครสมาชิก</Link></dr>
+  <Link href="/register" className="btn relative btn-primary flex items-center justify-center px-4 py-2 rounded text-white bg-blue-600 hover:bg-blue-700">สมัครสมาชิก</Link>
 
     </div>
   </div>
