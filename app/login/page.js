@@ -1,5 +1,13 @@
 'use client';
 
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  experimental: {
+    appDir: true,  // ถ้าใช้ app router
+  },
+}
+module.exports = nextConfig;
+
 import { useState } from 'react';
 import './login.css'; // ✅ ใช้ CSS แยกไฟล์
 
