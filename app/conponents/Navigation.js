@@ -49,6 +49,8 @@ export default function Navigation() {
 
   <Link href="/register" className="btn relative btn-primary flex items-center justify-center px-4 py-2 rounded text-white bg-blue-600 hover:bg-blue-700">สมัครสมาชิก</Link>
 
+  <Link href="/admin\users" className="btn relative btn-primary flex items-center justify-center px-4 py-2 rounded text-white bg-blue-600 hover:bg-blue-700">Adnim</Link>
+
     </div>
   </div>
 </nav>
