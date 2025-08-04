@@ -1,30 +1,24 @@
-'use client';
-
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
 import './userlist.css';
 
-export default function Page() {
-  const [items, setItems] = useState([]);
+export const dynamic = 'force-dynamic'; // 👈 ให้ Next ทำ SSR ทุกครั้ง (optional)
 
-  // ฟังก์ชัน fetch users
-  const getUsers = async () => {
-    try {
-      const res = await fetch('http://itdev.cmtc.ac.th:3000/api/users');
-      if (!res.ok) throw new Error('Failed to fetch data');
-      const data = await res.json();
-      setItems(data);
-    } catch (err) {
-      console.error('Error:', err);
+export default async function Page() {
+  let items = [];
+
+  try {
+    const res = await fetch('http://itdev.cmtc.ac.th:3000/api/users', {
+      cache: 'no-store', // 👈 ป้องกันการ cache สำหรับ SSR
+    });
+
+    if (!res.ok) {
+      throw new Error('Failed to fetch data');
     }
-  };
 
-  // โหลดตอนแรก + ตั้ง interval
-  useEffect(() => {
-    getUsers(); // โหลดครั้งแรก
-    const interval = setInterval(getUsers, 5000); // โหลดทุก 5 วิ
-    return () => clearInterval(interval); // เคลียร์ตอน component ถูก unmount
-  }, []);
+    items = await res.json();
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
 
   return (
     <div className="userlist-container">
