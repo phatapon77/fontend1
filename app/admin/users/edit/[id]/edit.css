@@ -1,0 +1,103 @@
+/* Edit page styles - soothing, accessible, and focused */
+
+/* Scope variables to this page container to avoid leaking styles */
+.edit-container {
+  --bg: #f5f7fb;
+  --card-bg: #ffffff;
+  --text: #0f172a;
+  --muted: #64748b;
+  --primary: #2563eb; /* blue-600 */
+  --primary-2: #4f46e5; /* indigo-600 */
+  --border: #e5e7eb;
+  --ring: rgba(37, 99, 235, 0.18);
+  --shadow: 0 12px 30px rgba(2, 6, 23, 0.08);
+
+  background: var(--card-bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: var(--shadow);
+}
+
+/* Page heading */
+.edit-container h1 {
+  font-size: 1.35rem;
+  line-height: 1.35;
+  margin: 0 0 16px;
+  color: var(--text);
+}
+
+/* Form layout */
+.edit-container form {
+  display: grid;
+  gap: 12px;
+}
+
+/* Inputs and selects */
+.edit-container input,
+.edit-container select,
+.edit-container textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #fbfdff;
+  color: var(--text);
+  outline: none;
+  transition: border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
+}
+
+.edit-container input::placeholder,
+.edit-container textarea::placeholder {
+  color: #94a3b8;
+}
+
+.edit-container input:focus,
+.edit-container select:focus,
+.edit-container textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px var(--ring);
+  background: #ffffff;
+}
+
+/* Submit button - override any existing utility classes */
+.edit-container button[type="submit"] {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 0;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-2));
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  box-shadow: 0 8px 20px rgba(79, 70, 229, 0.25);
+  transition: transform 120ms ease, box-shadow 160ms ease, filter 160ms ease;
+}
+
+.edit-container button[type="submit"]:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 28px rgba(79, 70, 229, 0.3);
+  filter: brightness(1.03);
+}
+
+.edit-container button[type="submit"]:active {
+  transform: translateY(0);
+  box-shadow: 0 8px 18px rgba(79, 70, 229, 0.24);
+}
+
+.edit-container button[type="submit"]:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Subtle separator for visual grouping if needed later */
+.edit-container .divider {
+  height: 1px;
+  background: var(--border);
+  margin: 8px 0;
+}
