@@ -14,6 +14,9 @@ export default function Page() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
+  // เก็บ password เดิมไว้แสดง
+  const [oldPassword, setOldPassword] = useState('')
+
   useEffect(() => {
     async function getUser() {
       try {
@@ -23,9 +26,6 @@ export default function Page() {
           return;
         }
         const data = await res.json();
-
-        // สมมติ API ส่ง user object ไม่ใช่ array
-        // ถ้า API ส่ง array ให้แก้เป็น data[0] ตามที่เคยทำ
         const user = Array.isArray(data) ? data[0] : data;
 
         if (user) {
@@ -34,6 +34,7 @@ export default function Page() {
           setLastname(user.lastname || '');
           setUsername(user.username || '');
           setPassword(user.password || '');
+          setOldPassword(user.password || ''); // เก็บ password เก่าไว้แสดง
         }
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -48,7 +49,7 @@ export default function Page() {
       const res = await fetch('http://itdev.cmtc.ac.th:3000/api/users', {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json',  // เพิ่ม header content-type ให้ถูกต้อง
+          'Content-Type': 'application/json',
           Accept: 'application/json',
         },
         body: JSON.stringify({ id, firstname, fullname, lastname, username, password }),
@@ -84,6 +85,13 @@ export default function Page() {
   return (
     <div className="max-w-md mx-auto mt-10 p-4 border rounded">
       <h1 className="text-xl font-bold mb-4">แก้ไขข้อมูลสมัครสมาชิก {id}</h1>
+
+      {/* แสดงชื่อและรหัสผ่านก่อนหน้า */}
+      <div className="mb-4 p-3 bg-gray-100 rounded">
+        <p><strong>ชื่อก่อนหน้า:</strong> {fullname}</p>
+        <p><strong>รหัสผ่านก่อนหน้า:</strong> {oldPassword}</p>
+      </div>
+
       <form onSubmit={handleUpdateSubmit} className="space-y-3">
         <select
           name="firstname"
