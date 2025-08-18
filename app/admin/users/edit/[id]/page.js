@@ -13,9 +13,12 @@ export default function Page() {
   const [lastname, setLastname] = useState('')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const [loading, setLoading] = useState(true)
+  const [submitting, setSubmitting] = useState(false)
 
   useEffect(() => {
     async function getUser() {
+      setLoading(true);
       try {
         const res = await fetch(`http://itdev.cmtc.ac.th:3000/api/users/${id}`);
         if (!res.ok) {
@@ -23,6 +26,9 @@ export default function Page() {
           return;
         }
         const data = await res.json();
+
+        // สมมติ API ส่ง user object ไม่ใช่ array
+        // ถ้า API ส่ง array ให้แก้เป็น data[0] ตามที่เคยทำ
         const user = Array.isArray(data) ? data[0] : data;
 
         if (user) {
@@ -34,6 +40,8 @@ export default function Page() {
         }
       } catch (error) {
         console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
       }
     }
     getUser();
@@ -41,16 +49,18 @@ export default function Page() {
 
   const handleUpdateSubmit = async (e) => {
     e.preventDefault();
+    setSubmitting(true);
     try {
       const res = await fetch('http://itdev.cmtc.ac.th:3000/api/users', {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json',  // เพิ่ม header content-type ให้ถูกต้อง
           Accept: 'application/json',
         },
         body: JSON.stringify({ id, firstname, fullname, lastname, username, password }),
       });
       const result = await res.json();
+      console.log(result);
       if (res.ok) {
         Swal.fire({
           icon: 'success',
@@ -74,95 +84,125 @@ export default function Page() {
         title: 'ข้อผิดพลาดเครือข่าย',
         text: 'ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้',
       })
+    } finally {
+      setSubmitting(false);
     }
   }
 
-  // SVG Icons (แกะง่ายและเล็ก)  
-  const IconUser = () => (
-    <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" >
-      <path strokeLinecap="round" strokeLinejoin="round" d="M5.121 17.804A9 9 0 1118.879 6.196 9 9 0 015.121 17.804z" />
-      <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-    </svg>
-  );
-
   return (
-    <div className="min-h-screen bg-gradient-to-tr from-blue-100 via-white to-purple-100 flex items-center justify-center px-4">
-      <div className="bg-white max-w-lg w-full rounded-3xl shadow-2xl p-10 border border-gray-200">
-        <h1 className="text-3xl font-extrabold text-gray-800 mb-8 text-center relative before:absolute before:content-[''] before:w-20 before:h-1 before:bg-blue-500 before:rounded-md before:left-1/2 before:-bottom-3 before:-translate-x-1/2">
-          แก้ไขข้อมูลสมัครสมาชิก #{id}
-        </h1>
-        <form onSubmit={handleUpdateSubmit} className="space-y-6">
-          {/* คำนำหน้า */}
-          <div>
-            <label htmlFor="firstname" className="block mb-2 font-semibold text-gray-700">
-              คำนำหน้า (Firstname)
-            </label>
-            <select
-              id="firstname"
-              name="firstname"
-              value={firstname}
-              onChange={(e) => setFirstname(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-4 focus:ring-blue-400 transition duration-300"
-              required
-            >
-              <option value="">-- เลือกคำนำหน้า --</option>
-              <option value="นาย">นาย</option>
-              <option value="นาง">นาง</option>
-              <option value="นางสาว">นางสาว</option>
-            </select>
-          </div>
+    <div className="container py-4">
+      <div className="row justify-content-center">
+        <div className="col-12 col-md-8 col-lg-6">
+          <div className="card shadow-sm">
+            <div className="card-header bg-primary text-white">
+              <h5 className="mb-0"><i className="bi bi-pencil-square me-2"></i>แก้ไขข้อมูลสมาชิก #{id}</h5>
+            </div>
 
-          {/* ชื่อ */}
-          <div>
-            <label htmlFor="fullname" className="block mb-2 font-semibold text-gray-700 flex items-center gap-2">
-              <IconUser /> ชื่อ (Fullname)
-            </label>
-            <input
-              type="text"
-              id="fullname"
-              placeholder="ชื่อ"
-              value={fullname}
-              onChange={(e) => setFullname(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-4 focus:ring-blue-400 transition duration-300"
-              required
-            />
-          </div>
+            {loading ? (
+              <div className="card-body text-center py-5">
+                <div className="spinner-border text-primary" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </div>
+                <div className="mt-3">กำลังโหลดข้อมูล...</div>
+              </div>
+            ) : (
+              <div className="card-body">
+                <form onSubmit={handleUpdateSubmit}>
+                  <div className="mb-3">
+                    <label className="form-label">คำนำหน้า</label>
+                    <select
+                      name="firstname"
+                      value={firstname}
+                      onChange={(e) => setFirstname(e.target.value)}
+                      className="form-select"
+                      required
+                    >
+                      <option value="">--เลือกคำนำหน้า--</option>
+                      <option value="นาย">นาย</option>
+                      <option value="นาง">นาง</option>
+                      <option value="นางสาว">นางสาว</option>
+                    </select>
+                  </div>
 
-          {/* นามสกุล */}
-          <div>
-            <label htmlFor="lastname" className="block mb-2 font-semibold text-gray-700 flex items-center gap-2">
-              <IconUser /> นามสกุล (Lastname)
-            </label>
-            <input
-              type="text"
-              id="lastname"
-              placeholder="นามสกุล"
-              value={lastname}
-              onChange={(e) => setLastname(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-4 focus:ring-blue-400 transition duration-300"
-              required
-            />
-          </div>
+                  <div className="row">
+                    <div className="col-md-6 mb-3">
+                      <label className="form-label">ชื่อ</label>
+                      <input
+                        type="text"
+                        value={fullname}
+                        onChange={(e) => setFullname(e.target.value)}
+                        className="form-control"
+                        required
+                      />
+                    </div>
+                    <div className="col-md-6 mb-3">
+                      <label className="form-label">นามสกุล</label>
+                      <input
+                        type="text"
+                        value={lastname}
+                        onChange={(e) => setLastname(e.target.value)}
+                        className="form-control"
+                        required
+                      />
+                    </div>
+                  </div>
 
-          {/* Username */}
-          <div>
-            <label htmlFor="username" className="block mb-2 font-semibold text-gray-700 flex items-center gap-2">
-              <IconUser /> Username
-            </label>
-            <input
-              type="text"
-              id="username"
-              placeholder="username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-4 focus:ring-blue-400 transition duration-300"
-              required
-            />
-          </div>
+                  <div className="mb-3">
+                    <label className="form-label">ชื่อผู้ใช้</label>
+                    <input
+                      type="text"
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
+                      className="form-control"
+                      required
+                    />
+                  </div>
 
-          {/* Password */}
-          <div>
-            <label htmlFor="password" className="block mb-2 font-semibold text-gray-700 flex items-center gap-2">
-              <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 11c1.104 0 2-.896 2-2V7a2 2 0 00-4 0v2c0 1.104.896 2 2 2z" />
-                <path strokeLinecap="round" strokeLinejoin="roun
+                  <div className="mb-4">
+                    <label className="form-label">รหัสผ่าน</label>
+                    <input
+                      type="password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="form-control"
+                      required
+                    />
+                  </div>
+
+                  <div className="d-flex gap-2">
+                    <button
+                      type="button"
+                      className="btn btn-outline-secondary"
+                      onClick={() => router.back()}
+                      disabled={submitting}
+                    >
+                      <i className="bi bi-arrow-left me-1"></i>
+                      ย้อนกลับ
+                    </button>
+                    <button
+                      type="submit"
+                      className="btn btn-primary ms-auto"
+                      disabled={submitting}
+                    >
+                      {submitting ? (
+                        <>
+                          <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                          กำลังบันทึก...
+                        </>
+                      ) : (
+                        <>
+                          <i className="bi bi-save me-1"></i>
+                          ปรับปรุงข้อมูล
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </form>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
