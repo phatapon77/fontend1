@@ -23,6 +23,9 @@ export default function Page() {
           return;
         }
         const data = await res.json();
+
+        // สมมติ API ส่ง user object ไม่ใช่ array
+        // ถ้า API ส่ง array ให้แก้เป็น data[0] ตามที่เคยทำ
         const user = Array.isArray(data) ? data[0] : data;
 
         if (user) {
@@ -45,7 +48,7 @@ export default function Page() {
       const res = await fetch('http://itdev.cmtc.ac.th:3000/api/users', {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json',  // เพิ่ม header content-type ให้ถูกต้อง
           Accept: 'application/json',
         },
         body: JSON.stringify({ id, firstname, fullname, lastname, username, password }),
@@ -81,72 +84,51 @@ export default function Page() {
   return (
     <div className="max-w-md mx-auto mt-10 p-4 border rounded">
       <h1 className="text-xl font-bold mb-4">แก้ไขข้อมูลสมัครสมาชิก {id}</h1>
-
       <form onSubmit={handleUpdateSubmit} className="space-y-3">
-        <label className="block">
-          <span>คำนำหน้า (Firstname):</span>
-          <select
-            name="firstname"
-            value={firstname}
-            onChange={(e) => setFirstname(e.target.value)}
-            className="w-full border p-2 rounded"
-            required
-          >
-            <option value="">--เลือกคำนำหน้า--</option>
-            <option value="นาย">นาย</option>
-            <option value="นาง">นาง</option>
-            <option value="นางสาว">นางสาว</option>
-          </select>
-        </label>
-
-        <label className="block">
-          <span>ชื่อ (Fullname):</span>
-          <input
-            type="text"
-            placeholder="ชื่อ"
-            value={fullname}
-            onChange={(e) => setFullname(e.target.value)}
-            className="w-full border p-2 rounded"
-            required
-          />
-        </label>
-
-        <label className="block">
-          <span>นามสกุล (Lastname):</span>
-          <input
-            type="text"
-            placeholder="นามสกุล"
-            value={lastname}
-            onChange={(e) => setLastname(e.target.value)}
-            className="w-full border p-2 rounded"
-            required
-          />
-        </label>
-
-        <label className="block">
-          <span>Username:</span>
-          <input
-            type="text"
-            placeholder="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            className="w-full border p-2 rounded"
-            required
-          />
-        </label>
-
-        <label className="block">
-          <span>Password:</span>
-          <input
-            type="password"
-            placeholder="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full border p-2 rounded"
-            required
-          />
-        </label>
-
+        <select
+          name="firstname"
+          value={firstname}
+          onChange={(e) => setFirstname(e.target.value)}
+          className="w-full border p-2 rounded"
+          required
+        >
+          <option value="">--เลือกคำนำหน้า--</option>
+          <option value="นาย">นาย</option>
+          <option value="นาง">นาง</option>
+          <option value="นางสาว">นางสาว</option>
+        </select>
+        <input
+          type="text"
+          placeholder="ชื่อ"
+          value={fullname}
+          onChange={(e) => setFullname(e.target.value)}
+          className="w-full border p-2 rounded"
+          required
+        />
+        <input
+          type="text"
+          placeholder="นามสกุล"
+          value={lastname}
+          onChange={(e) => setLastname(e.target.value)}
+          className="w-full border p-2 rounded"
+          required
+        />
+        <input
+          type="text"
+          placeholder="username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          className="w-full border p-2 rounded"
+          required
+        />
+        <input
+          type="password"
+          placeholder="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className="w-full border p-2 rounded"
+          required
+        />
         <button
           type="submit"
           className="w-full bg-warning text-white p-2 rounded hover:bg-blue-600"
