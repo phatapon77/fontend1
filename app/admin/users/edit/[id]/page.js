@@ -14,9 +14,6 @@ export default function Page() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
-  // เก็บ password เดิมไว้แสดง
-  const [oldPassword, setOldPassword] = useState('')
-
   useEffect(() => {
     async function getUser() {
       try {
@@ -34,7 +31,6 @@ export default function Page() {
           setLastname(user.lastname || '');
           setUsername(user.username || '');
           setPassword(user.password || '');
-          setOldPassword(user.password || ''); // เก็บ password เก่าไว้แสดง
         }
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -86,57 +82,71 @@ export default function Page() {
     <div className="max-w-md mx-auto mt-10 p-4 border rounded">
       <h1 className="text-xl font-bold mb-4">แก้ไขข้อมูลสมัครสมาชิก {id}</h1>
 
-      {/* แสดงชื่อและรหัสผ่านก่อนหน้า */}
-      <div className="mb-4 p-3 bg-gray-100 rounded">
-        <p><strong>ชื่อก่อนหน้า:</strong> {fullname}</p>
-        <p><strong>รหัสผ่านก่อนหน้า:</strong> {oldPassword}</p>
-      </div>
-
       <form onSubmit={handleUpdateSubmit} className="space-y-3">
-        <select
-          name="firstname"
-          value={firstname}
-          onChange={(e) => setFirstname(e.target.value)}
-          className="w-full border p-2 rounded"
-          required
-        >
-          <option value="">--เลือกคำนำหน้า--</option>
-          <option value="นาย">นาย</option>
-          <option value="นาง">นาง</option>
-          <option value="นางสาว">นางสาว</option>
-        </select>
-        <input
-          type="text"
-          placeholder="ชื่อ"
-          value={fullname}
-          onChange={(e) => setFullname(e.target.value)}
-          className="w-full border p-2 rounded"
-          required
-        />
-        <input
-          type="text"
-          placeholder="นามสกุล"
-          value={lastname}
-          onChange={(e) => setLastname(e.target.value)}
-          className="w-full border p-2 rounded"
-          required
-        />
-        <input
-          type="text"
-          placeholder="username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          className="w-full border p-2 rounded"
-          required
-        />
-        <input
-          type="password"
-          placeholder="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="w-full border p-2 rounded"
-          required
-        />
+        <label className="block">
+          <span>คำนำหน้า (Firstname):</span>
+          <select
+            name="firstname"
+            value={firstname}
+            onChange={(e) => setFirstname(e.target.value)}
+            className="w-full border p-2 rounded"
+            required
+          >
+            <option value="">--เลือกคำนำหน้า--</option>
+            <option value="นาย">นาย</option>
+            <option value="นาง">นาง</option>
+            <option value="นางสาว">นางสาว</option>
+          </select>
+        </label>
+
+        <label className="block">
+          <span>ชื่อ (Fullname):</span>
+          <input
+            type="text"
+            placeholder="ชื่อ"
+            value={fullname}
+            onChange={(e) => setFullname(e.target.value)}
+            className="w-full border p-2 rounded"
+            required
+          />
+        </label>
+
+        <label className="block">
+          <span>นามสกุล (Lastname):</span>
+          <input
+            type="text"
+            placeholder="นามสกุล"
+            value={lastname}
+            onChange={(e) => setLastname(e.target.value)}
+            className="w-full border p-2 rounded"
+            required
+          />
+        </label>
+
+        <label className="block">
+          <span>Username:</span>
+          <input
+            type="text"
+            placeholder="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            className="w-full border p-2 rounded"
+            required
+          />
+        </label>
+
+        <label className="block">
+          <span>Password:</span>
+          <input
+            type="password"
+            placeholder="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full border p-2 rounded"
+            required
+          />
+        </label>
+
         <button
           type="submit"
           className="w-full bg-warning text-white p-2 rounded hover:bg-blue-600"
