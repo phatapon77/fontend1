@@ -18,6 +18,8 @@
   border-radius: 16px;
   padding: 24px;
   box-shadow: var(--shadow);
+  position: relative; /* for RGB border overlay */
+  z-index: 0;         /* create stacking context */
 }
 
 /* Page heading */
@@ -100,4 +102,101 @@
   height: 1px;
   background: var(--border);
   margin: 8px 0;
+}
+
+/* ============================================ */
+/* Animated RGB running border around the panel */
+/* ============================================ */
+
+/* Register animatable custom property for smooth rotation */
+@property --rgb-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0turn;
+}
+
+/* Common gradient used by the running border */
+:root {
+  --rgb-gradient: conic-gradient(from var(--rgb-angle),
+    #ff0055, #ff7a00, #ffee00, #31ff00, #00ffee, #006eff, #b800ff, #ff0055);
+}
+
+/* RGB border for legacy wrapper */
+.edit-container::before,
+.edit-container::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;      /* match container radius */
+  padding: 2px;             /* border thickness */
+  background: var(--rgb-gradient);
+  pointer-events: none;
+}
+
+/* Show only the ring */
+.edit-container::before {
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask-composite: exclude;
+  animation: rgb-rotate 4s linear infinite;
+}
+
+/* Soft glow */
+.edit-container::after {
+  filter: blur(12px);
+  opacity: .35;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask-composite: exclude;
+  animation: rgb-rotate 4s linear infinite;
+}
+
+@keyframes rgb-rotate {
+  to { --rgb-angle: 1turn; }
+}
+
+/* ============================ */
+/* Support for Bootstrap .card  */
+/* ============================ */
+
+/* If the page uses a Bootstrap card, apply the same effect */
+.edit-page .card { position: relative; z-index: 0; border-radius: 16px; overflow: hidden; }
+
+.edit-page .card::before,
+.edit-page .card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  padding: 2px;
+  background: var(--rgb-gradient);
+  pointer-events: none;
+}
+
+.edit-page .card::before {
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask-composite: exclude;
+  animation: rgb-rotate 4s linear infinite;
+}
+
+.edit-page .card::after {
+  filter: blur(12px);
+  opacity: .35;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask-composite: exclude;
+  animation: rgb-rotate 4s linear infinite;
+}
+
+/* Respect user preference for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .edit-container::before,
+  .edit-container::after,
+  .edit-page .card::before,
+  .edit-page .card::after { animation: none; }
 }

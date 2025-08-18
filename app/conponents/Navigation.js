@@ -1,59 +1,109 @@
 // app/components/Navigation.js
 'use client';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
+function NavLink({ href, children, exact = false }) {
+  const pathname = usePathname();
+  const isActive = exact ? pathname === href : pathname?.startsWith(href || '');
+  return (
+    <Link href={href} className={`nav-link${isActive ? ' active' : ''}`}>
+      {children}
+    </Link>
+  );
+}
 
 export default function Navigation() {
   return (
+    <nav className="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm sticky-top">
+      <div className="container">
+        <Link className="navbar-brand d-flex align-items-center" href="/">
+          <i className="bi bi-journal-richtext me-2"></i>
+          <span className="fw-semibold">DAILY</span>
+        </Link>
 
-    
-  <nav className="navbar navbar-expand-lg bg-body-tertiary">
-  <div className="container-fluid">
-     <a className="navbar-brand" href="#">
-  <img src="/bootstrap-logo.svg" alt="Logo" width={30} height={24} className="d-inline-block align-text-top" />
-  DAILY
-</a>
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
 
-    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span className="navbar-toggler-icon" />
-    </button>
-    <div className="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-        <li className="nav-item">
-          <a className="nav-link active" aria-current="page" href="/">หน้าแรก</a>
-        </li>
-        <li className="nav-item">
-          <a className="nav-link" href="/service">บริการ</a>
-        </li>
-        <li className="nav-item dropdown">
-          <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            เกี่ยวกับเรา
-          </a>
-          <ul className="dropdown-menu">
-            <li><a className="dropdown-item" href="/con">แจ้งปัญหา</a></li>
-            <li><a className="dropdown-item" href="#">Another action</a></li>
-            <li><hr className="dropdown-divider" /></li>
-            <li><a className="dropdown-item" href="#">Something</a></li>
+        <div className="collapse navbar-collapse" id="navbarNav">
+          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+            <li className="nav-item">
+              <NavLink href="/" exact>
+                <i className="bi bi-house-door me-1"></i>
+                หน้าแรก
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink href="/service">
+                <i className="bi bi-briefcase me-1"></i>
+                บริการ
+              </NavLink>
+            </li>
+            <li className="nav-item dropdown">
+              <a
+                className="nav-link dropdown-toggle"
+                href="#"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <i className="bi bi-people me-1"></i>
+                เกี่ยวกับเรา
+              </a>
+              <ul className="dropdown-menu">
+                <li>
+                  <Link className="dropdown-item" href="/about">
+                    <i className="bi bi-info-circle me-2"></i>
+                    เกี่ยวกับเรา
+                  </Link>
+                </li>
+                <li>
+                  <Link className="dropdown-item" href="/contact">
+                    <i className="bi bi-chat-dots me-2"></i>
+                    ติดต่อ/แจ้งปัญหา
+                  </Link>
+                </li>
+              </ul>
+            </li>
           </ul>
-        </li>
-        <li className="nav-item">
-          <a className="nav-link disabled" href="/contact" aria-disabled="true">ติดต่อเรา</a>
-        </li>
-      </ul>
-      <form className="d-flex" role="search">
-        <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-        <button className="btn btn-outline-success" type="submit">Search</button>
-      </form>
-   
-  <Link href="/login" className="btn relative btn-primary flex items-center justify-center px-4 py-2 rounded text-white bg-blue-600 hover:bg-blue-700">Login</Link>
 
-  <Link href="/register" className="btn relative btn-primary flex items-center justify-center px-4 py-2 rounded text-white bg-blue-600 hover:bg-blue-700">สมัครสมาชิก</Link>
+          <form className="d-flex me-lg-3 mb-2 mb-lg-0" role="search" onSubmit={(e) => e.preventDefault()}>
+            <input
+              className="form-control form-control-sm me-2"
+              type="search"
+              placeholder="ค้นหา..."
+              aria-label="Search"
+            />
+            <button className="btn btn-sm btn-light" type="submit">
+              <i className="bi bi-search"></i>
+            </button>
+          </form>
 
-  <Link href="/admin/users" className="btn relative btn-primary flex items-center justify-center px-4 py-2 rounded text-white bg-blue-600 hover:bg-blue-700">Admin</Link>
-
-    </div>
-  </div>
-</nav>
-
+          <div className="d-flex gap-2">
+            <Link href="/login" className="btn btn-sm btn-outline-light">
+              <i className="bi bi-box-arrow-in-right me-1"></i>
+              เข้าสู่ระบบ
+            </Link>
+            <Link href="/register" className="btn btn-sm btn-warning text-dark">
+              <i className="bi bi-person-plus me-1"></i>
+              สมัครสมาชิก
+            </Link>
+            <Link href="/admin/users" className="btn btn-sm btn-light">
+              <i className="bi bi-gear me-1"></i>
+              Admin
+            </Link>
+          </div>
+        </div>
+      </div>
+    </nav>
   );
 }

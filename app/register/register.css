@@ -1,11 +1,24 @@
 /* register.css */
 
+/* Smooth RGB running border using conic-gradient */
+@property --rgb-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0turn;
+}
+
+:root {
+  --rgb-gradient: conic-gradient(from var(--rgb-angle),
+    #ff0055, #ff7a00, #ffee00, #31ff00, #00ffee, #006eff, #b800ff, #ff0055);
+}
+
 .register-background {
   background: #000000; /* ✅ พื้นหลังเปลี่ยนสีตรงนี้ */
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 24px;
 }
 
 .register-box {
@@ -15,31 +28,49 @@
   padding: 30px;
   background-color: #fff;
   border-radius: 16px;
-  z-index: 1;
-  overflow: hidden;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+  z-index: 0; /* allow pseudo elements below content */
+  overflow: visible; /* let glow show softly outside */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
 }
 
-.register-box::before {
+/* RGB running ring */
+.register-box::before,
+.register-box::after {
   content: '';
   position: absolute;
-  top: -2px;
-  left: -2px;
-  right: -2px;
-  bottom: -2px;
-  background: linear-gradient(45deg, red, orange, yellow, green, cyan, blue, violet, red);
-  background-size: 400%;
-  border-radius: 18px;
-  z-index: -1;
-  animation: rgbBorder 8s linear infinite;
+  inset: 0; /* cover the box */
+  border-radius: 16px;
+  padding: 2px; /* ring thickness */
+  background: var(--rgb-gradient);
+  pointer-events: none;
 }
 
-@keyframes rgbBorder {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+/* Show only the border ring */
+.register-box::before {
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask-composite: exclude;
+  animation: rgb-rotate 4.5s linear infinite;
 }
 
+/* Soft outer glow */
+.register-box::after {
+  filter: blur(12px);
+  opacity: .35;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask-composite: exclude;
+  animation: rgb-rotate 4.5s linear infinite;
+}
+
+@keyframes rgb-rotate {
+  to { --rgb-angle: 1turn; }
+}
+
+/* Title */
 .register-title {
   text-align: center;
   margin-bottom: 24px;
@@ -48,6 +79,7 @@
   font-weight: bold;
 }
 
+/* Inputs */
 .input-group {
   margin-bottom: 16px;
 }
@@ -66,32 +98,55 @@
   border-radius: 8px;
   outline: none;
   font-size: 14px;
+  transition: box-shadow .16s ease, border-color .16s ease;
 }
 
+.input-group input:focus {
+  border-color: #1665c1;
+  box-shadow: 0 0 0 4px rgba(26, 115, 232, 0.2);
+}
+
+/* Feedback */
 .error {
-  color: red;
+  color: #e11d48; /* rose-600 */
   text-align: center;
   margin-bottom: 12px;
 }
 
 .success {
-  color: green;
+  color: #16a34a; /* green-600 */
   text-align: center;
   margin-bottom: 12px;
 }
 
+/* Submit button */
 .submit-btn {
   width: 100%;
   padding: 12px;
-  background-color: #1a73e8;
+  background: linear-gradient(135deg, #1a73e8, #4f46e5);
   color: white;
   border: none;
-  border-radius: 8px;
-  font-weight: bold;
+  border-radius: 10px;
+  font-weight: 700;
   font-size: 16px;
   cursor: pointer;
+  box-shadow: 0 8px 18px rgba(26, 115, 232, 0.25);
+  transition: transform .12s ease, box-shadow .16s ease, filter .16s ease;
 }
 
 .submit-btn:hover {
-  background-color: #1665c1;
+  transform: translateY(-1px);
+  filter: brightness(1.04);
+  box-shadow: 0 12px 28px rgba(26, 115, 232, 0.32);
+}
+
+.submit-btn:active {
+  transform: translateY(0);
+}
+
+/* Respect user preference: reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .register-box::before,
+  .register-box::after { animation: none; }
+  .submit-btn, .input-group input { transition: none; }
 }

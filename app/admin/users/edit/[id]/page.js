@@ -3,140 +3,272 @@ import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2'
 import { useParams, useRouter } from 'next/navigation'
 import './edit.css'
+
 export default function Page() {
   const router = useRouter()
   const params = useParams();
   const id = params.id;
+
   const [firstname, setFirstname] = useState('')
   const [fullname, setFullname] = useState('')
   const [lastname, setLastname] = useState('')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [items, setItems] = useState([]);
-    useEffect(() => {
-        async function getUsers() {
-          try {
-            const res = await fetch(`http://itdev.cmtc.ac.th:3000/api/users/${id}`);
-            if (!res.ok) {
-              console.error('Failed to fetch data');
-              return;
-            }
-            const data = await res.json();
-            setItems(data);
+  const [showPassword, setShowPassword] = useState(false)
 
-        //กำหนดค่า state เริ่มต้นจาก API
-        if (data.length > 0) {
-          const user = data[0];
+  const [original, setOriginal] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [submitting, setSubmitting] = useState(false)
+
+  useEffect(() => {
+    async function getUser() {
+      setLoading(true);
+      try {
+        const res = await fetch(`http://itdev.cmtc.ac.th:3000/api/users/${id}`);
+        if (!res.ok) {
+          console.error('Failed to fetch data');
+          return;
+        }
+        const data = await res.json();
+        const user = Array.isArray(data) ? data[0] : data;
+        if (user) {
           setFirstname(user.firstname || '');
           setFullname(user.fullname || '');
           setLastname(user.lastname || '');
           setUsername(user.username || '');
           setPassword(user.password || '');
+          setOriginal({
+            firstname: user.firstname || '',
+            fullname: user.fullname || '',
+            lastname: user.lastname || '',
+            username: user.username || '',
+            password: user.password || ''
+          });
         }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    getUser();
+  }, [id]);
 
-          } catch (error) {
-            console.error('Error fetching data:', error);
-          }
-        }
-     
-      getUsers();
-      //const interval  = setInterval(getUsers, 1000);
-      //return () => clearInterval(interval);
-    }, []);
   const handleUpdateSubmit = async (e) => {
     e.preventDefault();
+    setSubmitting(true);
     try {
-    const res = await fetch('http://itdev.cmtc.ac.th:3000/api/users', {
-      method: 'PUT',
-      headers: {
-        Accept : 'application/json',
-      },
-      body: JSON.stringify({ id, firstname, fullname, lastname, username, password }),
-    })
-    const result = await res.json();
-    console.log(result);
-    if (res.ok) {
-      Swal.fire({
-        icon: 'success',
-        title: '<h3>ปรับปรุงข้อมูลเรียบร้อยแล้ว</h3>',
-        showConfirmButton: false,
-        timer: 2000
-        }).then(function () {
-        router.push('/register')
+      const res = await fetch('http://itdev.cmtc.ac.th:3000/api/users', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({ id, firstname, fullname, lastname, username, password }),
       });
-      setFirstname('')
-      setFullname('')
-      setLastname('')
-      setUsername('')
-      setPassword('')
-    } else {
+      const result = await res.json();
+      console.log(result);
+      if (res.ok) {
+        Swal.fire({
+          icon: 'success',
+          title: '<h3>ปรับปรุงข้อมูลเรียบร้อยแล้ว</h3>',
+          showConfirmButton: false,
+          timer: 2000
+        }).then(() => {
+          router.push('/register')
+        });
+      } else {
+        Swal.fire({
+          title: 'Error!',
+          text: 'เกิดข้อผิดพลาด!',
+          icon: 'error',
+          confirmButtonText: 'ตกลง'
+        })
+      }
+    } catch (error) {
       Swal.fire({
-        title: 'Error!',
-        text: 'เกิดข้อผิดพลาด!',
         icon: 'error',
-        confirmButtonText: 'ตกลง'
+        title: 'ข้อผิดพลาดเครือข่าย',
+        text: 'ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้',
       })
+    } finally {
+      setSubmitting(false);
     }
-  } catch (error) {
-    Swal.fire({
-      icon: 'error',
-      title: 'ข้อผิดพลาดเครือข่าย',
-      text: 'ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้',
-    })
   }
-  }
+
+  const isChanged = (field, value) => !!(original && original[field] !== value);
+  const resetToOriginal = () => {
+    if (!original) return;
+    setFirstname(original.firstname);
+    setFullname(original.fullname);
+    setLastname(original.lastname);
+    setUsername(original.username);
+    setPassword(original.password);
+  };
+  const changedAny = !!(original && (
+    original.firstname !== firstname ||
+    original.fullname !== fullname ||
+    original.lastname !== lastname ||
+    original.username !== username ||
+    original.password !== password
+  ));
+
   return (
-    <div className="edit-container max-w-md mx-auto mt-10 p-4">
-      <h1 className="text-xl font-bold mb-4">แก้ไขข้อมูลสมัครสมาชิก {id}</h1>
-      {items.map((item) => (
-      <form key={item.id} onSubmit={handleUpdateSubmit} className="space-y-3">
-       
-        <select name="firstname" onChange={(e) => setFirstname(e.target.value)} className="w-full border p-2 rounded" required>
-          <option value="{item.firstname}">{item.firstname}</option>
-          <option value="นาย">นาย</option>
-          <option value="นาง">นาง</option>
-          <option value="นางสาว">นางสาว</option>
-        </select>
-        <input
-          type="text"
-          placeholder="ชื่อ"
-          defaultValue={item.fullname}
-          onChange={(e) => setFullname(e.target.value)}
-          className="w-full border p-2 rounded"
-          required
-        />
-        <input
-          type="text"
-          placeholder="นามสกุล"
-          defaultValue={item.lastname}
-          onChange={(e) => setLastname(e.target.value)}
-          className="w-full border p-2 rounded"
-          required
-        />
-                <input
-          type="text"
-          placeholder="username"
-          defaultValue={item.username}
-          onChange={(e) => setUsername(e.target.value)}
-          className="w-full border p-2 rounded"
-          required
-        />
-                <input
-          type="text"
-          placeholder="password"
-          defaultValue={item.password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="w-full border p-2 rounded"
-          required
-        />
-        <button
-          type="submit"
-          className="w-full bg-warning text-white p-2 rounded hover:bg-blue-600"
-        >
-          ปรับปรุงข้อมูล
-        </button>
-      </form>
-       ))} //ปิด items.map
+    <div className="edit-page-bg py-4">
+      <div className="container edit-page">
+        <div className="row justify-content-center">
+          <div className="col-12 col-md-8 col-lg-6">
+            <div className="card shadow-sm">
+              <div className="card-header">
+                <h5 className="mb-0"><i className="bi bi-pencil-square me-2"></i>แก้ไขข้อมูลสมาชิก #{id}</h5>
+              </div>
+
+              {loading ? (
+                <div className="card-body text-center py-5">
+                  <div className="spinner-border text-primary" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                  </div>
+                  <div className="mt-3">กำลังโหลดข้อมูล...</div>
+                </div>
+              ) : (
+                <div className="card-body">
+                  <form onSubmit={handleUpdateSubmit}>
+                    <div className="mb-3">
+                      <div className="d-flex justify-content-between align-items-center">
+                        <label className="form-label mb-0">คำนำหน้า</label>
+                        {isChanged('firstname', firstname) && <span className="badge bg-warning text-dark">แก้ไขแล้ว</span>}
+                      </div>
+                      <div className="form-text">ข้อมูลเดิม: {original?.firstname || '-'}</div>
+                      <select
+                        name="firstname"
+                        value={firstname}
+                        onChange={(e) => setFirstname(e.target.value)}
+                        className="form-select"
+                        required
+                      >
+                        <option value="">--เลือกคำนำหน้า--</option>
+                        <option value="นาย">นาย</option>
+                        <option value="นาง">นาง</option>
+                        <option value="นางสาว">นางสาว</option>
+                      </select>
+                    </div>
+
+                    <div className="row">
+                      <div className="col-md-6 mb-3">
+                        <div className="d-flex justify-content-between align-items-center">
+                          <label className="form-label mb-0">ชื่อ</label>
+                          {isChanged('fullname', fullname) && <span className="badge bg-warning text-dark">แก้ไขแล้ว</span>}
+                        </div>
+                        <div className="form-text">ข้อมูลเดิม: {original?.fullname || '-'}</div>
+                        <input
+                          type="text"
+                          value={fullname}
+                          onChange={(e) => setFullname(e.target.value)}
+                          className="form-control"
+                          required
+                        />
+                      </div>
+                      <div className="col-md-6 mb-3">
+                        <div className="d-flex justify-content-between align-items-center">
+                          <label className="form-label mb-0">นามสกุล</label>
+                          {isChanged('lastname', lastname) && <span className="badge bg-warning text-dark">แก้ไขแล้ว</span>}
+                        </div>
+                        <div className="form-text">ข้อมูลเดิม: {original?.lastname || '-'}</div>
+                        <input
+                          type="text"
+                          value={lastname}
+                          onChange={(e) => setLastname(e.target.value)}
+                          className="form-control"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    <div className="mb-3">
+                      <div className="d-flex justify-content-between align-items-center">
+                        <label className="form-label mb-0">ชื่อผู้ใช้</label>
+                        {isChanged('username', username) && <span className="badge bg-warning text-dark">แก้ไขแล้ว</span>}
+                      </div>
+                      <div className="form-text">ข้อมูลเดิม: {original?.username || '-'}</div>
+                      <input
+                        type="text"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        className="form-control"
+                        required
+                      />
+                    </div>
+
+                    <div className="mb-4">
+                      <div className="d-flex justify-content-between align-items-center">
+                        <label className="form-label mb-0">รหัสผ่าน</label>
+                        {isChanged('password', password) && <span className="badge bg-warning text-dark">แก้ไขแล้ว</span>}
+                      </div>
+                      <div className="form-text">ข้อมูลเดิม: ซ่อนเพื่อความปลอดภัย</div>
+                      <div className="input-group">
+                        <input
+                          type={showPassword ? 'text' : 'password'}
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          className="form-control"
+                          required
+                        />
+                        <button
+                          type="button"
+                          className="btn btn-outline-secondary"
+                          onClick={() => setShowPassword((v) => !v)}
+                          aria-label={showPassword ? 'ซ่อนรหัสผ่าน' : 'แสดงรหัสผ่าน'}
+                          title={showPassword ? 'ซ่อนรหัสผ่าน' : 'แสดงรหัสผ่าน'}
+                        >
+                          <i className={showPassword ? 'bi bi-eye-slash' : 'bi bi-eye'}></i>
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="d-flex gap-2">
+                      <button
+                        type="button"
+                        className="btn btn-outline-secondary"
+                        onClick={() => router.back()}
+                        disabled={submitting}
+                      >
+                        <i className="bi bi-arrow-left me-1"></i>
+                        ย้อนกลับ
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-outline-warning"
+                        onClick={resetToOriginal}
+                        disabled={submitting || !changedAny}
+                      >
+                        <i className="bi bi-arrow-counterclockwise me-1"></i>
+                        รีเซ็ตเป็นข้อมูล
+                      </button>
+                      <button
+                        type="submit"
+                        className="btn btn-primary ms-auto"
+                        disabled={submitting}
+                      >
+                        {submitting ? (
+                          <>
+                            <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                            กำลังบันทึก...
+                          </>
+                        ) : (
+                          <>
+                            <i className="bi bi-save me-1"></i>
+                            ปรับปรุงข้อมูล
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
