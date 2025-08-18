@@ -53,7 +53,7 @@ export default async function Page() {
                 <td>{item.sex}</td>
                 <td>{item.birthday}</td>
                 <td>
-                  <Link href="#" className="btn edit">Edit</Link>
+                  <Link href={`/admin/users/edit/${item.id}`} className="btn edit">Edit</Link>
                 </td>
                 <td>
                   <button className="btn delete">Del</button>
