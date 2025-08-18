@@ -15,6 +15,7 @@ export default function Page() {
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(true)
   const [submitting, setSubmitting] = useState(false)
+  const [original, setOriginal] = useState(null)
 
   useEffect(() => {
     async function getUser() {
@@ -37,6 +38,13 @@ export default function Page() {
           setLastname(user.lastname || '');
           setUsername(user.username || '');
           setPassword(user.password || '');
+          setOriginal({
+            firstname: user.firstname || '',
+            fullname: user.fullname || '',
+            lastname: user.lastname || '',
+            username: user.username || '',
+            password: user.password || ''
+          });
         }
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -89,6 +97,23 @@ export default function Page() {
     }
   }
 
+  const isChanged = (field, value) => !!(original && original[field] !== value);
+  const resetToOriginal = () => {
+    if (!original) return;
+    setFirstname(original.firstname);
+    setFullname(original.fullname);
+    setLastname(original.lastname);
+    setUsername(original.username);
+    setPassword(original.password);
+  };
+  const changedAny = !!(original && (
+    original.firstname !== firstname ||
+    original.fullname !== fullname ||
+    original.lastname !== lastname ||
+    original.username !== username ||
+    original.password !== password
+  ));
+
   return (
     <div className="container py-4">
       <div className="row justify-content-center">
@@ -109,7 +134,11 @@ export default function Page() {
               <div className="card-body">
                 <form onSubmit={handleUpdateSubmit}>
                   <div className="mb-3">
-                    <label className="form-label">คำนำหน้า</label>
+                    <div className="d-flex justify-content-between align-items-center">
+                      <label className="form-label mb-0">คำนำหน้า</label>
+                      {isChanged('firstname', firstname) && <span className="badge bg-warning text-dark">แก้ไขแล้ว</span>}
+                    </div>
+                    <div className="form-text">ข้อมูลเดิม: {original?.firstname || '-'}</div>
                     <select
                       name="firstname"
                       value={firstname}
@@ -126,7 +155,11 @@ export default function Page() {
 
                   <div className="row">
                     <div className="col-md-6 mb-3">
-                      <label className="form-label">ชื่อ</label>
+                      <div className="d-flex justify-content-between align-items-center">
+                        <label className="form-label mb-0">ชื่อ</label>
+                        {isChanged('fullname', fullname) && <span className="badge bg-warning text-dark">แก้ไขแล้ว</span>}
+                      </div>
+                      <div className="form-text">ข้อมูลเดิม: {original?.fullname || '-'}</div>
                       <input
                         type="text"
                         value={fullname}
@@ -136,7 +169,11 @@ export default function Page() {
                       />
                     </div>
                     <div className="col-md-6 mb-3">
-                      <label className="form-label">นามสกุล</label>
+                      <div className="d-flex justify-content-between align-items-center">
+                        <label className="form-label mb-0">นามสกุล</label>
+                        {isChanged('lastname', lastname) && <span className="badge bg-warning text-dark">แก้ไขแล้ว</span>}
+                      </div>
+                      <div className="form-text">ข้อมูลเดิม: {original?.lastname || '-'}</div>
                       <input
                         type="text"
                         value={lastname}
@@ -148,7 +185,11 @@ export default function Page() {
                   </div>
 
                   <div className="mb-3">
-                    <label className="form-label">ชื่อผู้ใช้</label>
+                    <div className="d-flex justify-content-between align-items-center">
+                      <label className="form-label mb-0">ชื่อผู้ใช้</label>
+                      {isChanged('username', username) && <span className="badge bg-warning text-dark">แก้ไขแล้ว</span>}
+                    </div>
+                    <div className="form-text">ข้อมูลเดิม: {original?.username || '-'}</div>
                     <input
                       type="text"
                       value={username}
@@ -159,7 +200,11 @@ export default function Page() {
                   </div>
 
                   <div className="mb-4">
-                    <label className="form-label">รหัสผ่าน</label>
+                    <div className="d-flex justify-content-between align-items-center">
+                      <label className="form-label mb-0">รหัสผ่าน</label>
+                      {isChanged('password', password) && <span className="badge bg-warning text-dark">แก้ไขแล้ว</span>}
+                    </div>
+                    <div className="form-text">ข้อมูลเดิม: ซ่อนเพื่อความปลอดภัย</div>
                     <input
                       type="password"
                       value={password}
@@ -178,6 +223,15 @@ export default function Page() {
                     >
                       <i className="bi bi-arrow-left me-1"></i>
                       ย้อนกลับ
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-outline-warning"
+                      onClick={resetToOriginal}
+                      disabled={submitting || !changedAny}
+                    >
+                      <i className="bi bi-arrow-counterclockwise me-1"></i>
+                      รีเซ็ตเป็นข้อมูลเดิม
                     </button>
                     <button
                       type="submit"
