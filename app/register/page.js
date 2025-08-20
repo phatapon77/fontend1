@@ -2,6 +2,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Swal from 'sweetalert2';
 import './register.css';
+import { useRouter } from 'next/navigation';
 
 export default function Register() {
   const [form, setForm] = useState({
@@ -26,6 +27,7 @@ export default function Register() {
   const [isYouTube, setIsYouTube] = useState(false);
   const [ytId, setYtId] = useState('');
   const [collapsed, setCollapsed] = useState(false);
+  const router = useRouter();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -39,12 +41,12 @@ export default function Register() {
     e.preventDefault();
 
     if (form.password !== form.confirmPassword) {
-      setError('Passwords do not match');
+      setError('รหัสผ่านและการยืนยันรหัสผ่านไม่ตรงกัน');
       return;
     }
 
     try {
-      const res = await fetch('http://itdev.cmtc.ac.th:3000/api/users', {
+      const res = await fetch('https://backend-nextjs-virid.vercel.app/api/users', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -62,7 +64,7 @@ export default function Register() {
       console.log(result);
 
       if (res.ok) {
-        setSuccess('Registration successful!');
+        setSuccess('สมัครสมาชิกสำเร็จ!');
         setForm({
           firstname: '',
           fullname: '',
@@ -72,13 +74,15 @@ export default function Register() {
           confirmPassword: '',
         });
         setError('');
-        Swal.fire('Success', 'You have been registered!', 'success');
+        Swal.fire('สำเร็จ', 'สมัครสมาชิกเรียบร้อยแล้ว', 'success').then(() => {
+          router.push('/login');
+        });
       } else {
-        setError(result.message || 'Registration failed');
+        setError(result.message || 'สมัครสมาชิกไม่สำเร็จ');
       }
     } catch (err) {
       console.error(err);
-      setError('An error occurred. Please try again.');
+      setError('เกิดข้อผิดพลาด โปรดลองอีกครั้ง');
     }
   };
 
@@ -267,10 +271,10 @@ export default function Register() {
   return (
     <div className="register-background">
       <div className="register-box">
-        <h2 className="register-title">Membership Application</h2>
+        <h2 className="register-title">สมัครสมาชิก</h2>
         <form onSubmit={handleSubmit}>
           <div className="input-group">
-            <label>First Name:</label>
+            <label>ชื่อ:</label>
             <input
               type="text"
               name="firstname"
@@ -280,7 +284,7 @@ export default function Register() {
             />
           </div>
           <div className="input-group">
-            <label>Full Name:</label>
+            <label>ชื่อเต็ม:</label>
             <input
               type="text"
               name="fullname"
@@ -290,7 +294,7 @@ export default function Register() {
             />
           </div>
           <div className="input-group">
-            <label>Last Name:</label>
+            <label>นามสกุล:</label>
             <input
               type="text"
               name="lastname"
@@ -300,7 +304,7 @@ export default function Register() {
             />
           </div>
           <div className="input-group">
-            <label>Username:</label>
+            <label>ชื่อผู้ใช้:</label>
             <input
               type="text"
               name="username"
@@ -310,7 +314,7 @@ export default function Register() {
             />
           </div>
           <div className="input-group">
-            <label>Password:</label>
+            <label>รหัสผ่าน:</label>
             <input
               type="password"
               name="password"
@@ -320,7 +324,7 @@ export default function Register() {
             />
           </div>
           <div className="input-group">
-            <label>Confirm Password:</label>
+            <label>ยืนยันรหัสผ่าน:</label>
             <input
               type="password"
               name="confirmPassword"
@@ -331,20 +335,20 @@ export default function Register() {
           </div>
           {error && <div className="error">{error}</div>}
           {success && <div className="success">{success}</div>}
-          <button type="submit" className="submit-btn">Register</button>
+          <button type="submit" className="submit-btn">สมัครสมาชิก</button>
         </form>
       </div>
 
       {/* Floating music player (bottom-right) */}
       <div className="music-player" style={collapsed ? { ...playerStyles.box, ...playerStyles.boxCollapsed } : playerStyles.box}>
         {collapsed ? (
-          <button type="button" onClick={toggleCollapse} style={{ background: 'transparent', border: 'none', padding: 0, cursor: 'pointer' }} aria-label="Expand music player">
+          <button type="button" onClick={toggleCollapse} style={{ background: 'transparent', border: 'none', padding: 0, cursor: 'pointer' }} aria-label="ขยายเครื่องเล่นเพลง">
             <span style={playerStyles.collapsedIcon}>♪</span>
           </button>
         ) : (
           <>
             <button type="button" onClick={toggleCollapse} style={playerStyles.collapseBtn} title="ย่อ">—</button>
-            <div style={playerStyles.title}>Music Player</div>
+            <div style={playerStyles.title}>เครื่องเล่นเพลง</div>
             <input
               type="url"
               placeholder="วางลิงก์เพลง (mp3/stream)"

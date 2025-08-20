@@ -1,109 +1,115 @@
-import Link from 'next/link';
+'use client';
+import Link from 'next/link'
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation'
 
-export const dynamic = 'force-dynamic'; // ให้ Next ทำ SSR ทุกครั้ง (optional)
+export default function User() {
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true); // <-- เพิ่ม state loading
+  const router = useRouter();
 
-export default async function Page() {
-  let items = [];
+  useEffect(() => {
 
-  try {
-    const res = await fetch('http://itdev.cmtc.ac.th:3000/api/users', {
-      cache: 'no-store', // ป้องกันการ cache สำหรับ SSR
-    });
+    const token = localStorage.getItem('token');
+     if (!token) {
+       router.push('/login');
+       return;
+     }
 
-    if (!res.ok) {
-      throw new Error('Failed to fetch data');
+    async function getUsers() {
+      try {
+        const res = await fetch('https://backend-nextjs-virid.vercel.app/api/users');
+        if (!res.ok) {
+          console.error('Failed to fetch data');
+          return;
+        }
+        const data = await res.json();
+        setItems(data);
+        setLoading(false); // <-- โหลดเสร็จแล้ว
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        setLoading(false);
+      }
     }
+ 
+  getUsers()
+  const interval  = setInterval(getUsers, 1000);
+  return () => clearInterval(interval);
+}, []);
 
-    items = await res.json();
+const handleDelete = async (id) => {
+  //console.log('user id :', id);
+  try {
+    const res = await fetch(`https://backend-nextjs-virid.vercel.app/api/users/${id}`, {
+      method: 'DELETE',
+      headers: {
+        Accept : 'application/json',
+      },
+    });
+    const result = await res.json();
+    console.log(result);
+
   } catch (error) {
     console.error('Error fetching data:', error);
   }
+}; //end handleDelete
 
-  const maskPassword = (pwd) => {
-    const len = (pwd || '').length || 6;
-    return '•'.repeat(Math.min(len, 8));
-  };
+ // ถ้า loading ให้ return null หรือข้อความ loading
+ if (loading) {
+  return <div className='text-center'><h1>Loading...</h1></div>; // หรือ return null เพื่อไม่ให้ render อะไร
+}
 
   return (
-    <div className="container py-4">
-      <div className="row justify-content-center">
-        <div className="col-12">
-          <div className="card shadow-sm">
-            <div className="card-header d-flex align-items-center justify-content-between">
-              <div>
-                <h5 className="mb-0"><i className="bi bi-people me-2"></i>รายชื่อผู้ใช้</h5>
-                <small className="text-muted">ทั้งหมด {items?.length || 0} รายการ</small>
-              </div>
-              <div className="d-flex gap-2">
-                <Link href="/register" className="btn btn-sm btn-primary">
-                  <i className="bi bi-person-plus me-1"></i>
-                  เพิ่มผู้ใช้
-                </Link>
-              </div>
-            </div>
-
-            <div className="card-body">
-              {!items || items.length === 0 ? (
-                <div className="alert alert-warning mb-0 d-flex align-items-center" role="alert">
-                  <i className="bi bi-exclamation-triangle me-2"></i>
-                  ไม่พบข้อมูลผู้ใช้หรือเกิดข้อผิดพลาดในการดึงข้อมูล
-                </div>
-              ) : (
-                <div className="table-responsive">
-                  <table className="table table-hover table-striped align-middle">
-                    <thead className="table-light">
-                      <tr>
-                        <th style={{width: '60px'}}>#</th>
-                        <th>Firstname</th>
-                        <th>Fullname</th>
-                        <th>Lastname</th>
-                        <th>Username</th>
-                        <th>Password</th>
-                        <th>Address</th>
-                        <th>Sex</th>
-                        <th>Birthday</th>
-                        <th style={{width: '80px'}} className="text-center">Edit</th>
-                        <th style={{width: '90px'}} className="text-center">Delete</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {items.map((item) => (
-                        <tr key={item.id}>
-                          <td><span className="badge bg-secondary">#{item.id}</span></td>
-                          <td>{item.firstname || '-'}</td>
-                          <td>{item.fullname || '-'}</td>
-                          <td>{item.lastname || '-'} </td>
-                          <td><span className="fw-semibold">{item.username || '-'}</span></td>
-                          <td><span className="text-muted">{maskPassword(item.password)}</span></td>
-                          <td className="text-truncate" style={{maxWidth: '220px'}}>{item.address || '-'}</td>
-                          <td>
-                            {item.sex ? (
-                              <span className="badge bg-info text-dark">{item.sex}</span>
-                            ) : (
-                              <span className="text-muted">-</span>
-                            )}
-                          </td>
-                          <td>{item.birthday || '-'}</td>
-                          <td className="text-center">
-                            <Link href={`/admin/users/edit/${item.id}`} className="btn btn-sm btn-outline-primary">
-                              <i className="bi bi-pencil-square"></i>
-                            </Link>
-                          </td>
-                          <td className="text-center">
-                            <button type="button" className="btn btn-sm btn-outline-danger" disabled title="ยังไม่พร้อมใช้งาน">
-                              <i className="bi bi-trash"></i>
-                            </button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
+    <>
+    <br /><br /><br /><br />
+    <div className="container">
+      <div className="card">
+  <div className="card-header">
+    Users List
+  </div>
+  <div className="card-body">
+  <div className="row">
+      <table className="table table-striped table-hover table-responsive">
+        <thead>
+          <tr>
+            <th className='col-md-2 text-center'>#</th>
+            <th className='col-md-4'>Firstname</th>
+            <th className='col-md-4'>Fullname</th>
+            <th className='col-md-4'>Lastname</th>
+            <th className='col-md-4'>Username</th>
+            {/* <th className='col-md-4'>Password</th> */}
+            <th className='col-md-4'>Address</th>
+            <th className='col-md-4'>Sex</th>
+            <th className='col-md-4'>Birthday</th>
+            <th className='col-md-1'>Eidt</th>
+            <th className='col-md-1'>Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          {items.map((item) => (
+            <tr key={item.id}>
+              <td className='text-center'>{item.id}</td>
+              <td>{item.firstname}</td>
+              <td>{item.fullname}</td>
+              <td>{item.lastname}</td>
+              <td>{item.username}</td>
+              {/* <td>{item.password}</td> */}
+              <td>{item.address}</td>
+              <td>{item.sex}</td>
+              <td>{item.birthday}</td>
+              <td><Link href={`/admin/users/edit/${item.id}`} className="btn btn-warning">Edit</Link></td>
+              <td><button className="btn btn-pill btn-danger" type="button" onClick={() => handleDelete(item.id)}><i className="fa fa-trash"></i>Del</button></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
+    </div>
+
+    </div>
+    </div>
+    <br /><br />
+
+    </>
   );
 }
