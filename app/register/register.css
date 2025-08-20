@@ -13,12 +13,71 @@
 }
 
 .register-background {
-  background: #000000; /* ✅ พื้นหลังเปลี่ยนสีตรงนี้ */
+  /* Navy-blue gradient background */
+  background:
+    radial-gradient(800px circle at 10% 10%, rgba(255, 255, 255, 0.06), transparent 40%),
+    radial-gradient(600px circle at 90% 20%, rgba(255, 255, 255, 0.04), transparent 35%),
+    linear-gradient(135deg, #0a2540 0%, #0b3a75 50%, #1e499b 100%);
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 24px;
+  position: relative; /* for clouds layering */
+  overflow: hidden;   /* hide clouds overflow */
+}
+
+/* Futuristic neon grid floor */
+.register-background::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -10%;
+  height: 70vh;
+  z-index: 0;
+  background:
+    /* vertical lines */
+    repeating-linear-gradient(to right, rgba(0, 255, 255, 0.22) 0 2px, transparent 2px 60px),
+    /* horizontal lines */
+    repeating-linear-gradient(to top, rgba(0, 255, 255, 0.22) 0 2px, transparent 2px 60px);
+  transform: perspective(900px) rotateX(62deg) scale(1.2);
+  transform-origin: bottom;
+  filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.25));
+  animation: grid-scroll 12s linear infinite;
+  opacity: 0.75;
+  pointer-events: none;
+}
+
+/* Holographic scanlines + floating particles + horizon glow */
+.register-background::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image:
+    /* horizon glow */
+    radial-gradient(ellipse at 50% 100%, rgba(0, 204, 255, 0.38) 0%, rgba(0, 204, 255, 0.0) 60%),
+    /* scan lines */
+    repeating-linear-gradient(180deg, rgba(0, 255, 255, 0.08) 0 2px, transparent 2px 40px),
+    /* particles */
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='128' height='128'><rect width='128' height='128' fill='transparent'/><rect x='10' y='20' width='2' height='2' fill='white' opacity='0.4'/><rect x='40' y='60' width='2' height='2' fill='white' opacity='0.5'/><rect x='70' y='30' width='2' height='2' fill='white' opacity='0.45'/><rect x='100' y='80' width='2' height='2' fill='white' opacity='0.4'/><rect x='26' y='96' width='2' height='2' fill='white' opacity='0.35'/></svg>");
+  background-repeat: no-repeat, no-repeat, repeat;
+  background-size: 100% 100%, 100% 100%, 256px 256px;
+  background-position: 50% 50%, 0 0, 0 0;
+  animation: scan-sweep 10s linear infinite;
+  pointer-events: none;
+  opacity: 0.55;
+}
+
+@keyframes grid-scroll {
+  0% { background-position: 0 0, 0 0; }
+  100% { background-position: 0 -600px, -600px 0; }
+}
+
+@keyframes scan-sweep {
+  0%   { background-position: 50% 50%, 0 -100vh,   0 0; }
+  100% { background-position: 50% 50%, 0  100vh, -1024px 0; }
 }
 
 .register-box {
@@ -29,7 +88,7 @@
   background-color: #fff;
   border-radius: 16px;
   border: 1px solid #e5e7eb;
-  z-index: 0; /* allow pseudo elements below content */
+  z-index: 1; /* elevate form above animated background */
   overflow: visible; /* let glow show softly outside */
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
 }
@@ -146,6 +205,8 @@
 
 /* Respect user preference: reduced motion */
 @media (prefers-reduced-motion: reduce) {
+  .register-background::before,
+  .register-background::after,
   .register-box::before,
   .register-box::after { animation: none; }
   .submit-btn, .input-group input { transition: none; }
