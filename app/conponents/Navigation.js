@@ -1,7 +1,8 @@
 // app/components/Navigation.js
 'use client';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 function NavLink({ href, children, exact = false }) {
   const pathname = usePathname();
@@ -14,6 +15,30 @@ function NavLink({ href, children, exact = false }) {
 }
 
 export default function Navigation() {
+  const router = useRouter();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const sync = () => setIsLoggedIn(!!localStorage.getItem('token'));
+    sync();
+    const onStorage = (e) => { if (e.key === 'token') sync(); };
+    window.addEventListener('storage', onStorage);
+    window.addEventListener('focus', sync);
+    return () => {
+      window.removeEventListener('storage', onStorage);
+      window.removeEventListener('focus', sync);
+    };
+  }, []);
+
+  const handleLogout = () => {
+    try {
+      localStorage.removeItem('token');
+      localStorage.removeItem('rememberUser');
+    } catch {}
+    setIsLoggedIn(false);
+    router.push('/');
+  };
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark navbar-future sticky-top" data-bs-theme="dark">
       <div className="container py-2">
@@ -89,18 +114,33 @@ export default function Navigation() {
           </form>
 
           <div className="d-flex gap-2">
-            <Link href="/login" className="btn btn-sm btn-neo">
-              <i className="bi bi-box-arrow-in-right me-1"></i>
-              เข้าสู่ระบบ
-            </Link>
+            {isLoggedIn ? (
+              <button onClick={handleLogout} className="btn btn-sm btn-neo btn-neo-subtle">
+                <i className="bi bi-box-arrow-right me-1"></i>
+                ออกจากระบบ
+              </button>
+            ) : (
+              <Link href="/login" className="btn btn-sm btn-neo">
+                <i className="bi bi-box-arrow-in-right me-1"></i>
+                เข้าสู่ระบบ
+              </Link>
+            )}
             <Link href="/register" className="btn btn-sm btn-neo btn-neo-accent">
               <i className="bi bi-person-plus me-1"></i>
               สมัครสมาชิก
             </Link>
-            <Link href="/admin/users" className="btn btn-sm btn-neo btn-neo-subtle">
-              <i className="bi bi-gear me-1"></i>
-              Admin
-            </Link>
+            {isLoggedIn && (
+              <span className="admin-status d-none d-md-inline-flex align-items-center px-2">
+                <span className="admin-dot me-1"></span>
+                สถานะแอดมิน
+              </span>
+            )}
+            {isLoggedIn && (
+              <Link href="/admin/users" className="btn btn-sm btn-neo btn-neo-subtle">
+                <i className="bi bi-gear me-1"></i>
+                Admin
+              </Link>
+            )}
           </div>
         </div>
       </div>
@@ -264,6 +304,10 @@ export default function Navigation() {
           box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05) inset;
         }
         .toggler-future:hover { box-shadow: 0 0 0 2px rgba(0, 229, 255, 0.22); }
+
+        /* Admin status badge */
+        .admin-status{ border:1px solid var(--border); border-radius:.6rem; background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03)); color:var(--text); font-size:.8rem; }
+        .admin-dot{ width:8px; height:8px; border-radius:999px; background:#22c55e; box-shadow:0 0 12px rgba(34,197,94,.8); display:inline-block; }
 
         /* Reduce motion for accessibility */
         @media (prefers-reduced-motion: reduce) {
