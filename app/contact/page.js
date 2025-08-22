@@ -26,7 +26,7 @@ export default function ContactPage() {
         <i className="bi bi-chat-dots me-2"></i>
         ติดต่อ/แจ้งปัญหา
       </h1>
-      <p className="text-secondary mb-4">กรุณากรอกแบบฟอร์มด้านล่าง ทีมงานจะตอบกลับโดยเร็วที��สุด</p>
+      <p className="text-secondary mb-4">กรุณากรอกแบบฟอร์มด้านล่าง ทีมงานจะตอบกลับโดยเร็วที่สุด</p>
 
       <div className="row g-4">
         <div className="col-lg-7 order-2 order-lg-1">
@@ -95,7 +95,7 @@ export default function ContactPage() {
             <ul className="list-unstyled mb-0 text-secondary">
               <li className="mb-1"><i className="bi bi-envelope me-2"></i>support@daily.example</li>
               <li className="mb-1"><i className="bi bi-discord me-2"></i>community/DAILY</li>
-              <li className="mb-1"><i className="bi bi-geo-alt me-2"></i>Bangkok, Thailand</li>
+              <li className="mb-1"><i className="bi bi-geo-alt me-2"></i>Chiang Mai, Thailand</li>
             </ul>
           </div>
 
@@ -104,7 +104,7 @@ export default function ContactPage() {
             borderColor: 'rgba(255,255,255,.14)'
           }}>
             <h6 className="text-uppercase text-secondary mb-2">คำแนะนำ</h6>
-            <p className="mb-0 text-secondary">ระบุรายละเอียด อุปกรณ์ เบราว์เซอร์ และขั้นตอ���ที่ทำให้เกิดปัญหา เพื่อให้เราช่วยได้เร็วขึ้น</p>
+            <p className="mb-0 text-secondary">ระบุรายละเอียด อุปกรณ์ เบราว์เซอร์ และขั้นตอนที่ทำให้เกิดปัญหา เพื่อให้เราช่วยได้เร็วขึ้น</p>
           </div>
         </div>
       </div>

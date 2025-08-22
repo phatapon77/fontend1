@@ -218,11 +218,11 @@ export default function LoginPage() {
         .login-card::before { -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); mask-composite: exclude; animation: rgb-rotate 4.5s linear infinite; }
         .login-card::after { filter: blur(12px); opacity: .35; -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); mask-composite: exclude; animation: rgb-rotate 4.5s linear infinite; }
 
-        .login-title { margin: 0 0 4px; text-align: center; font-weight: 800; letter-spacing: .6px; color: #ffffff; }
-        .login-sub { margin: 0 0 18px; text-align: center; font-size: 13px; color: #ffffff; opacity: 1; }
+        .login-title { margin: 0 0 4px; text-align: center; font-weight: 800; letter-spacing: .6px; color: var(--primary); }
+        .login-sub { margin: 0 0 18px; text-align: center; font-size: 13px; color: var(--primary); opacity: 1; }
 
         .login-form { display: grid; gap: 14px; }
-        .field label { display: block; margin-bottom: 6px; font-size: 12px; color: #ffffff; opacity: 1; }
+        .field label { display: block; margin-bottom: 6px; font-size: 12px; color: var(--primary); opacity: 1; }
         .field input[type='text'], .field input[type='password'] { width: 100%; padding: 10px 12px; border-radius: 10px; border: 2px solid #1a73e8; background: rgba(0,0,0,0.25); color: #ffffff; caret-color: #ffffff; outline: none; transition: box-shadow .16s ease, border-color .16s ease; }
         .field input:focus { border-color: #1665c1; box-shadow: 0 0 0 4px rgba(26,115,232,0.20); }
         .field input::placeholder { color: #ffffff; opacity: 0.9; }
@@ -231,8 +231,8 @@ export default function LoginPage() {
         .password-wrap .toggle-visibility { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); width: 36px; height: 28px; border-radius: 8px; border: 1px solid rgba(125,211,252,.35); background: rgba(0,0,0,.2); color: #e6f3ff; cursor: pointer; }
 
         .row { display: flex; align-items: center; justify-content: space-between; }
-        .remember { display: inline-flex; gap: 8px; align-items: center; font-size: 12px; color: #ffffff; opacity: 1; }
-        .link { color: #ffffff; text-decoration: none; }
+        .remember { display: inline-flex; gap: 8px; align-items: center; font-size: 12px; color: var(--primary); opacity: 1; }
+        .link { color: var(--primary); text-decoration: none; }
         .link:hover { text-decoration: underline; }
 
         .login-error { color: #ffffff; text-align: center; font-size: 13px; }
@@ -240,7 +240,7 @@ export default function LoginPage() {
         .btn { width: 100%; padding: 12px; border: none; border-radius: 10px; font-weight: 700; color: #fff; background: linear-gradient(135deg, #1a73e8, #4f46e5); cursor: pointer; box-shadow: 0 8px 18px rgba(26,115,232,.25); transition: transform .12s ease, box-shadow .16s ease, filter .16s ease; }
         .btn:hover { transform: translateY(-1px); filter: brightness(1.04); box-shadow: 0 12px 28px rgba(26,115,232,.32); }
 
-        .hint { margin-top: 12px; text-align: center; font-size: 12px; color: #ffffff; opacity: 1; }
+        .hint { margin-top: 12px; text-align: center; font-size: 12px; color: var(--primary); opacity: 1; }
 
         @media (prefers-reduced-motion: reduce) {
           .login-card::before, .login-card::after, .login-bg::before, .login-bg::after { animation: none !important; }
