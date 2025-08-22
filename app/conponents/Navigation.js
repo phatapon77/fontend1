@@ -126,7 +126,8 @@ export default function Navigation() {
           -webkit-backdrop-filter: blur(12px) saturate(120%);
           border-bottom: 1px solid var(--border);
           box-shadow: 0 8px 40px rgba(0, 0, 0, 0.35);
-          overflow: clip;
+          z-index: 1100;
+          overflow: visible;
         }
         .navbar-future::before {
           content: '';
