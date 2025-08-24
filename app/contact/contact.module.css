@@ -1,0 +1,156 @@
+/* Futuristic Contact page styles */
+
+.futuristicWrap {
+  position: relative;
+  min-height: 100vh;
+  background-color: #070b18;
+  overflow: hidden;
+}
+
+.futuristicBg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.gradient {
+  position: absolute;
+  inset: -10%;
+  background:
+    radial-gradient(60% 40% at 20% 10%, rgba(0,229,255,0.25), transparent 60%),
+    radial-gradient(50% 35% at 80% 30%, rgba(41,121,255,0.25), transparent 60%),
+    radial-gradient(60% 40% at 50% 100%, rgba(0,255,170,0.18), transparent 60%),
+    linear-gradient(180deg, #0b1024, #060913 60%, #05070f);
+  filter: saturate(1.1) contrast(1.05);
+}
+
+.grid {
+  position: absolute;
+  left: -50%;
+  right: -50%;
+  height: 140%;
+  bottom: -10%;
+  background-image:
+    linear-gradient(rgba(0,245,255,0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,245,255,0.08) 1px, transparent 1px);
+  background-size: 48px 48px, 48px 48px;
+  transform: perspective(800px) rotateX(60deg) translateY(-10%);
+  box-shadow: 0 0 60px rgba(0, 200, 255, .08) inset;
+  animation: contactGridShift 20s linear infinite;
+  mask-image: linear-gradient(to top, black 30%, transparent 80%);
+  -webkit-mask-image: linear-gradient(to top, black 30%, transparent 80%);
+}
+
+@keyframes contactGridShift {
+  0% { background-position: 0 0, 0 0; }
+  100% { background-position: 0 48px, 48px 0; }
+}
+
+.glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: .5;
+}
+
+.glow1 {
+  width: 420px; height: 420px; top: -80px; left: -80px;
+  background: radial-gradient(circle, rgba(0,214,255,.7), transparent 60%);
+  animation: contactFloat1 14s ease-in-out infinite alternate;
+}
+
+.glow2 {
+  width: 520px; height: 520px; bottom: -120px; right: -120px;
+  background: radial-gradient(circle, rgba(88,79,255,.6), transparent 60%);
+  animation: contactFloat2 16s ease-in-out infinite alternate;
+}
+
+@keyframes contactFloat1 { to { transform: translate(30px, 20px) scale(1.05); } }
+@keyframes contactFloat2 { to { transform: translate(-25px, -15px) scale(1.03); } }
+
+.scanlines {
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255,255,255,.04),
+    rgba(255,255,255,.04) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  mix-blend-mode: overlay; opacity: .3; animation: contactScan 8s linear infinite;
+}
+@keyframes contactScan { 0% { background-position: 0 0; } 100% { background-position: 0 4px; } }
+
+.contentElevated { position: relative; z-index: 1; }
+
+/* Glass blocks */
+.glass {
+  background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+  border-color: rgba(255,255,255,.14) !important;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+.glassCta {
+  background: linear-gradient(180deg, rgba(0,229,255,.14), rgba(41,121,255,.12));
+  border-color: rgba(255,255,255,.14) !important;
+  box-shadow: 0 20px 60px rgba(0,0,0,.35);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+/* Neon inputs */
+.neonInput {
+  background: rgba(255,255,255,0.04) !important;
+  border: 1px solid rgba(255,255,255,0.18) !important;
+  color: #ffffff !important;
+}
+.neonInput::placeholder { color: rgba(255,255,255,.6); }
+.neonInput:focus {
+  border-color: rgba(0,229,255,0.8) !important;
+  box-shadow: 0 0 0 .2rem rgba(0,229,255,.15), 0 0 20px rgba(0,229,255,.25) inset !important;
+  background: rgba(255,255,255,0.06) !important;
+}
+
+/* Neon buttons */
+.btnNeo {
+  color: #fff !important;
+  background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+  border: 1px solid rgba(255,255,255,.18) !important;
+  transition: transform .15s ease, box-shadow .2s ease, filter .2s ease;
+}
+.btnNeo:hover { transform: translateY(-1px); filter: saturate(1.1); }
+
+.btnNeoAccent {
+  background: linear-gradient(180deg, rgba(0,229,255,.22), rgba(41,121,255,.18));
+  border-color: rgba(0,229,255,.5) !important;
+  box-shadow: 0 10px 30px rgba(0,229,255,.18), 0 0 0 1px rgba(0,229,255,.2) inset;
+}
+.btnNeoAccent:hover { box-shadow: 0 14px 40px rgba(0,229,255,.25), 0 0 0 1px rgba(0,229,255,.28) inset; }
+
+/* Force text white in the page scope */
+.contentElevated,
+.contentElevated h1,
+.contentElevated h2,
+.contentElevated h3,
+.contentElevated h4,
+.contentElevated h5,
+.contentElevated h6,
+.contentElevated p,
+.contentElevated span,
+.contentElevated small,
+.contentElevated li,
+.contentElevated a,
+.contentElevated label {
+  color: #ffffff !important;
+}
+
+/* Override Bootstrap text utilities within this scope */
+.contentElevated :global(.text-secondary),
+.contentElevated :global(.text-primary),
+.contentElevated :global(.text-info),
+.contentElevated :global(.text-muted),
+.contentElevated :global(.text-body),
+.contentElevated :global(.link-body-emphasis) {
+  color: #ffffff !important;
+}
